@@ -65,13 +65,15 @@ RUN  apk --no-cache add \
 	&& rm -rf /tmp/umurmur* \
 	&& mv /usr/local/etc/umurmur.conf /etc/umurmurd.conf.default \
 	&& apk --no-cache del build-dependencies
+	
 
 # COPY SCRIPTS & TEMPLATES
 COPY bin/* /usr/bin/
 COPY templates/* /templates/
 
 # EXTRA INIT SCRIPTS & BAN FILE
-RUN mkdir /docker-entrypoint-init.d
+RUN mkdir /docker-entrypoint-init.d \
+	&& chmod +x /usr/bin/entrypoint
 
 CMD ["/usr/local/bin/umurmurd","-d","-c","/etc/umurmurd.conf"]
 ENTRYPOINT ["/usr/bin/entrypoint"]

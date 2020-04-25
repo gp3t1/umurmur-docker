@@ -1,40 +1,48 @@
-## Channel tree definition @ https://github.com/umurmur/umurmur/wiki/Configuration#channel-configuration
-#  Summary of channel parameters:
-#  - name (required)
-#  - parent (required)
-#  - noenter (optional)
-#  - password (optional) [0.2.8]
-#  - description (optional)
-#  - silent (optional) [0.2.14]
-#  - position (optional) [0.2.14]
+# Channel tree definition:
+# Root channel must always be defined first.
+# If a channel has a parent, the parent must be defined before the child channel(s).
 channels = ( {
-    name = "Root";
-    parent = "";
-    noenter = true;
-    description = "Root";
-  },
-  {
-    name = "Lobby";
-    parent = "Root";
-    description = "Lobby channel - default";
-    position = -1;
-  },
-  {
-    name = "Games";
-    parent = "Root";
-    description = "Games";
-    noenter = true;
-  },
-  {
-    name = "Coop RPG";
-    parent = "Games";
-    description = "Coop RPG channel";
-    password = "changeme"
-  }
+         name = "Root";
+         parent = "";
+         description = "Root channel. No entry.";
+         noenter = true;
+         },
+         {
+         name = "Lobby";
+         parent = "Root";
+         description = "Lobby channel";
+         },
+         {
+         name = "Red team";
+         parent = "Lobby";
+         description = "The Red team channel";
+     # password = "redpw";
+         },
+         {
+         name = "Blue team";
+         parent = "Lobby";
+         description = "The Blue team channel";
+     # password = "bluepw";
+         },
+         {
+         name = "Silent";
+         parent = "Root";
+         description = "Silent channel";
+         silent = true;
+         position = -1; # Will appear before 'lobby' channel in the client's channel tree
+         }
+);
+# Channel links configuration.
+channel_links = ( {
+         source = "Lobby";
+         destination = "Red team";
+         },
+         {
+         source = "Lobby";
+         destination = "Blue team";
+         }
 );
 
-## Default channel
+# The channel in which users will appear in when connecting.
+# Note that default channel can't have 'noenter = true' or password set
 default_channel = "Lobby";
-
-## Channel Link Configuration @ https://github.com/umurmur/umurmur/wiki/Configuration#channel-link-configuration
-channel_links = ();
